@@ -22,12 +22,16 @@ podTemplate(containers: [
 
         stage('build') {
             container('docker') {
-              echo "Building docker image..."
-	      echo "Original step was using docker for build."
-	      echo "You will need to use kaniko instead"
-              sh "echo docker build -t $appimage --no-cache ."
-              sh "echo docker login $artifactory -u admin -p password"
-              sh "echo docker push $appimage"
+        		sh """
+          			/kaniko/executor \
+		            	--context="${WORKSPACE}" \
+		            	--dockerfile="${WORKSPACE}/Dockerfile" \
+		            	--destination="${appimage}:${apptag}" \
+		           		--destination="${appimage}:latest" \
+		            	--cache=true \
+		            	--cache-dir=/cache \
+		            	--verbosity=info
+        		"""
             }
         } //end build
 
