@@ -33,7 +33,7 @@ podTemplate(containers: [
 
         stage('deploy') {
             container('docker') {
-	      if (DEPLOY) {
+	      if (deploy) {
                 echo "***** Doing some deployment stuff *********"
              }  else {
                 echo "***** NO DEPLOY - Doing somthing else. Testing? *********"
